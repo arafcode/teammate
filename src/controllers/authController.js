@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { username, email, password } = req.body;
+    const { username, email, password, city, gender, birth_date } = req.body;
 
     try {
         // Kullanıcı zaten var mı?
@@ -26,7 +26,7 @@ exports.register = async (req, res) => {
         const password_hash = await bcrypt.hash(password, salt);
 
         // Kullanıcı oluşturma
-        const userId = await User.create({ username, email, password_hash });
+        const userId = await User.create({ username, email, password_hash, city, gender, birth_date });
 
         // JWT Token oluşturma
         const token = jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: '24h' });

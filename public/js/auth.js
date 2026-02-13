@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const city = document.getElementById('city').value;
+            const gender = document.getElementById('gender').value;
+            const birth_date = document.getElementById('birth_date').value;
 
             showError(null);
 
@@ -48,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch(`${API_URL}/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password })
+                    body: JSON.stringify({ username, email, password, city, gender, birth_date })
                 });
 
                 const data = await response.json();

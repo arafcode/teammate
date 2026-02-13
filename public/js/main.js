@@ -112,7 +112,7 @@ function createListingCard(listing) {
             <div class="flex items-center gap-3">
                 <img src="${listing.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + listing.username}" alt="User" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100">
                 <div>
-                    <h3 class="font-semibold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">${safeTitle}</h3>
+                    <h3 class="font-semibold text-[#37352F] leading-tight group-hover:text-blue-600 transition-colors">${safeTitle}</h3>
                     <p class="text-xs text-slate-500 mt-0.5">@${safeUsername}</p>
                 </div>
             </div>
@@ -142,7 +142,7 @@ function createListingCard(listing) {
             </div>
             
             <button data-email="${listing.email}" data-title="${safeTitle}" 
-                class="text-sm font-medium text-slate-900 group-hover:text-blue-600 transition-colors flex items-center gap-1">
+                class="text-sm font-medium text-[#37352F] group-hover:text-blue-600 transition-colors flex items-center gap-1">
                 Mesaj At
                 <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
@@ -297,6 +297,8 @@ function setupHeaderInteractions() {
     }
     const btnLogin = document.getElementById('btn-login');
     const btnCreate = document.getElementById('btn-create-listing');
+    const btnRegister = document.getElementById('btn-register');
+
     const user = Auth.getUser();
 
     // UI Update based on Auth
@@ -310,6 +312,10 @@ function setupHeaderInteractions() {
                     Auth.logout();
                 }
             };
+        }
+        // Hide Register button if logged in
+        if (btnRegister) {
+            btnRegister.style.display = 'none';
         }
     } else {
         // Reset to default

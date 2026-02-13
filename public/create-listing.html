@@ -14,7 +14,13 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#0f172a',
+                        notion: {
+                            bg: '#F7F6F3', // Notion App Background
+                            text: '#37352F', // Notion Primary Text
+                            dim: 'rgba(55, 53, 47, 0.65)', // Notion Secondary Text
+                            border: 'rgba(55, 53, 47, 0.09)', // Notion Border
+                        },
+                        primary: '#37352F',
                         secondary: '#334155',
                         accent: '#2563eb',
                     }
@@ -25,7 +31,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-gray-50 text-slate-900 font-sans antialiased">
+<body style="background-color: #F7F6F3; color: #37352F;" class="font-sans antialiased">
 
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -34,9 +40,9 @@
                 <div
                     class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold group-hover:bg-blue-600 transition-colors">
                     T</div>
-                <span class="font-bold text-lg text-slate-900">teammate</span>
+                <span class="font-bold text-lg text-[#37352F]">teammate</span>
             </a>
-            <a href="index.html" class="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+            <a href="index.html" class="text-sm font-medium text-slate-500 hover:text-[#37352F] transition-colors">
                 İptal
             </a>
         </div>
@@ -44,7 +50,7 @@
 
     <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-slate-900">Yeni İlan Oluştur</h1>
+            <h1 class="text-2xl font-bold text-[#37352F]">Yeni İlan Oluştur</h1>
             <p class="text-slate-500 mt-1">Takım arkadaşını bulmak için detayları gir.</p>
         </div>
 
@@ -58,7 +64,7 @@
                         <input type="radio" name="category_slug" value="virtual" class="peer sr-only" checked>
                         <div
                             class="p-4 rounded-xl border-2 border-gray-200 hover:border-blue-400 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all text-center">
-                            <div class="font-semibold text-slate-900 peer-checked:text-blue-700">Sanal Ortam</div>
+                            <div class="font-semibold text-[#37352F] peer-checked:text-blue-700">Sanal Ortam</div>
                             <div class="text-xs text-slate-500 mt-1">Oyun, Discord vb.</div>
                         </div>
                     </label>
@@ -66,7 +72,7 @@
                         <input type="radio" name="category_slug" value="real_life" class="peer sr-only">
                         <div
                             class="p-4 rounded-xl border-2 border-gray-200 hover:border-green-400 peer-checked:border-green-600 peer-checked:bg-green-50 transition-all text-center">
-                            <div class="font-semibold text-slate-900 peer-checked:text-green-700">Gerçek Hayat</div>
+                            <div class="font-semibold text-[#37352F] peer-checked:text-green-700">Gerçek Hayat</div>
                             <div class="text-xs text-slate-500 mt-1">Halı saha, Spor vb.</div>
                         </div>
                     </label>
@@ -125,7 +131,7 @@
             <!-- Submit -->
             <div class="flex items-center justify-end gap-4 pt-4">
                 <a href="index.html"
-                    class="px-6 py-3 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">İptal</a>
+                    class="px-6 py-3 text-sm font-medium text-slate-600 hover:text-[#37352F] transition-colors">İptal</a>
                 <button type="submit" id="btn-submit"
                     class="px-8 py-3 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl shadow-lg shadow-slate-900/20 transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed">
                     İlanı Yayınla

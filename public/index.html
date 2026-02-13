@@ -15,9 +15,15 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#0f172a', // Slate 900
-                        secondary: '#334155', // Slate 700
-                        accent: '#2563eb', // Blue 600
+                        notion: {
+                            bg: '#F7F6F3', // Notion App Background
+                            text: '#37352F', // Notion Primary Text
+                            dim: 'rgba(55, 53, 47, 0.65)', // Notion Secondary Text
+                            border: 'rgba(55, 53, 47, 0.09)', // Notion Border
+                        },
+                        primary: '#37352F',
+                        secondary: '#334155',
+                        accent: '#2563eb',
                     },
                     animation: {
                         'blob': 'blob 7s infinite',
@@ -72,8 +78,8 @@
     </style>
 </head>
 
-<body
-    class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+<body style="background-color: #F7F6F3; color: #37352F;"
+    class="font-sans antialiased selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
 
     <!-- Background Gradients -->
     <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
@@ -100,19 +106,24 @@
                     <span class="relative text-white font-bold text-xl z-10">T</span>
                 </div>
                 <span
-                    class="font-bold text-xl tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">teammate</span>
+                    class="font-bold text-xl tracking-tight text-[#37352F] group-hover:text-blue-600 transition-colors">teammate</span>
             </div>
 
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-                <a href="#how-it-works" class="hover:text-slate-900 transition-colors">Nasıl Çalışır?</a>
-                <a href="#features" class="hover:text-slate-900 transition-colors">Özellikler</a>
-                <a href="#listings-section" class="hover:text-slate-900 transition-colors">İlanlar</a>
+                <a href="#how-it-works" class="hover:text-[#37352F] transition-colors">Nasıl Çalışır?</a>
+                <a href="#features" class="hover:text-[#37352F] transition-colors">Özellikler</a>
+                <a href="#listings-section" class="hover:text-[#37352F] transition-colors">İlanlar</a>
             </nav>
 
             <div class="flex items-center gap-4">
                 <button id="btn-login"
-                    class="hidden md:block text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                    class="hidden md:block text-sm font-medium text-slate-600 hover:text-[#37352F] transition-colors">
                     Giriş Yap
+                </button>
+                <button id="btn-register"
+                    class="hidden md:block text-sm font-medium text-slate-600 hover:text-[#37352F] px-4 py-2 border border-slate-200 rounded-lg hover:border-slate-300 transition-all"
+                    onclick="window.location.href='register.html'">
+                    Kayıt Ol
                 </button>
                 <button id="btn-create-listing"
                     class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-slate-900/20 transition-all hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-95">
@@ -134,7 +145,7 @@
             Yeni: Topluluk Özellikleri Yayında
         </div>
 
-        <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-tight animate-fade-in-up"
+        <h1 class="text-5xl md:text-7xl font-extrabold text-[#37352F] tracking-tight mb-8 leading-tight animate-fade-in-up"
             style="animation-delay: 0.2s;">
             Oyunun kaderini<br>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">takım
@@ -171,15 +182,15 @@
         <div class="mt-16 pt-8 border-t border-slate-200/60 flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 animate-fade-in-up"
             style="animation-delay: 0.6s;">
             <div class="text-center">
-                <div class="text-3xl font-bold text-slate-900">5,000+</div>
+                <div class="text-3xl font-bold text-[#37352F]">5,000+</div>
                 <div class="text-sm text-slate-500 font-medium">Aktif Oyuncu</div>
             </div>
             <div class="text-center">
-                <div class="text-3xl font-bold text-slate-900">12,000+</div>
+                <div class="text-3xl font-bold text-[#37352F]">12,000+</div>
                 <div class="text-sm text-slate-500 font-medium">Oluşturulan İlan</div>
             </div>
             <div class="text-center">
-                <div class="text-3xl font-bold text-slate-900">%98</div>
+                <div class="text-3xl font-bold text-[#37352F]">%98</div>
                 <div class="text-sm text-slate-500 font-medium">Olumlu Eşleşme</div>
             </div>
         </div>
@@ -199,7 +210,7 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Kafa Dengi Oyuncular</h3>
+                    <h3 class="text-xl font-bold text-[#37352F] mb-3">Kafa Dengi Oyuncular</h3>
                     <p class="text-slate-500 leading-relaxed">Sadece yetenek seviyesine göre değil, oyun tarzına ve
                         kişiliğine uygun arkadaşlar bul.</p>
                 </div>
@@ -214,7 +225,7 @@
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Güvenli Topluluk</h3>
+                    <h3 class="text-xl font-bold text-[#37352F] mb-3">Güvenli Topluluk</h3>
                     <p class="text-slate-500 leading-relaxed">Toksik oyunculara yer yok. Profil doğrulama ve oylama
                         sistemiyle kaliteli bir deneyim.</p>
                 </div>
@@ -229,7 +240,7 @@
                                 d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Hızlı Eşleşme</h3>
+                    <h3 class="text-xl font-bold text-[#37352F] mb-3">Hızlı Eşleşme</h3>
                     <p class="text-slate-500 leading-relaxed">Bekleme süresi yok. Anlık ilanlarla dakikalar içinde
                         takımını kur ve oyuna başla.</p>
                 </div>
@@ -241,7 +252,7 @@
     <main id="listings-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
             <div>
-                <h2 class="text-2xl font-bold text-slate-900">Aktif İlanlar</h2>
+                <h2 class="text-2xl font-bold text-[#37352F]">Aktif İlanlar</h2>
                 <p class="text-slate-500 mt-1">Sana uygun ilanlara göz at veya kendi ilanını oluştur.</p>
             </div>
 
@@ -252,7 +263,7 @@
                     id="toggle-indicator"></div>
 
                 <button id="btn-virtual"
-                    class="relative z-10 px-6 py-2 text-sm font-medium text-slate-900 rounded-lg focus:outline-none transition-colors duration-200"
+                    class="relative z-10 px-6 py-2 text-sm font-medium text-[#37352F] rounded-lg focus:outline-none transition-colors duration-200"
                     onclick="switchTab('virtual')">
                     Sanal Ortam
                 </button>
@@ -269,14 +280,14 @@
             <button
                 class="px-4 py-2 bg-slate-900 text-white border border-slate-900 rounded-full text-sm font-medium shadow-sm hover:bg-slate-800 transition-colors">Tümü</button>
             <button
-                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">League
+                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-[#37352F] transition-colors">League
                 of Legends</button>
             <button
-                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">Valorant</button>
+                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-[#37352F] transition-colors">Valorant</button>
             <button
-                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">CS2</button>
+                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-[#37352F] transition-colors">CS2</button>
             <button
-                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">Dota
+                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-[#37352F] transition-colors">Dota
                 2</button>
         </div>
 
@@ -303,11 +314,11 @@
                 <div
                     class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-sm">
                     T</div>
-                <span class="font-bold text-lg text-slate-900">teammate</span>
+                <span class="font-bold text-lg text-[#37352F]">teammate</span>
             </div>
             <p class="text-slate-500 text-sm">© 2024 Teammate. Tüm hakları saklıdır.</p>
             <div class="flex gap-6 text-slate-400">
-                <a href="#" class="hover:text-slate-900 transition-colors"><svg class="w-5 h-5" fill="currentColor"
+                <a href="#" class="hover:text-[#37352F] transition-colors"><svg class="w-5 h-5" fill="currentColor"
                         viewBox="0 0 24 24">
                         <path
                             d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />

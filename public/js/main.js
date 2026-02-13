@@ -107,7 +107,7 @@ function createListingCard(listing) {
     const safeUsername = escapeHtml(listing.username);
 
     return `
-        < div class="group bg-white rounded-2xl p-5 border border-gray-200/60 shadow-sm hover:shadow-md hover:border-gray-300/80 transition-all duration-300 cursor-pointer" >
+    <div class="group bg-white rounded-2xl p-5 border border-gray-200/60 shadow-sm hover:shadow-md hover:border-gray-300/80 transition-all duration-300 cursor-pointer">
         <div class="flex justify-between items-start mb-3">
             <div class="flex items-center gap-3">
                 <img src="${listing.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + listing.username}" alt="User" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100">
@@ -147,8 +147,8 @@ function createListingCard(listing) {
                 <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
         </div>
-    </div >
-        `;
+    </div>
+  `;
 }
 
 // Helpers
@@ -168,8 +168,8 @@ function switchTab(type) {
     // Calculate position relative to container
     // The parent has horizontal padding (p-1 which is 4px)
     // We want the indicator to match the active button's dimensions and position
-    toggleIndicator.style.width = `${activeBtn.offsetWidth} px`;
-    toggleIndicator.style.height = `${activeBtn.offsetHeight} px`;
+    toggleIndicator.style.width = `${activeBtn.offsetWidth}px`;
+    toggleIndicator.style.height = `${activeBtn.offsetHeight}px`;
 
     // Move the indicator to the button's position
     // Since indicator is absolute top-1 left-1, we need to adjust transform.
@@ -222,8 +222,14 @@ function timeAgo(date) {
 }
 
 function getRemainingTime(expiryDateStr) {
+    let expiry;
+    if (typeof expiryDateStr === 'string' && !expiryDateStr.endsWith('Z')) {
+        expiry = new Date(expiryDateStr + 'Z'); // Treat as UTC
+    } else {
+        expiry = new Date(expiryDateStr);
+    }
+
     const now = new Date();
-    const expiry = new Date(expiryDateStr);
     const diffMs = expiry - now;
 
     if (diffMs <= 0) return "Süresi Doldu";
@@ -297,7 +303,7 @@ function setupHeaderInteractions() {
     if (Auth.isAuthenticated() && user) {
         // Change Login button to Profile/Logout
         if (btnLogin) {
-            btnLogin.innerHTML = `< span class="text-blue-600 font-semibold" > @${user.username}</span > `;
+            btnLogin.innerHTML = `<span class="text-blue-600 font-semibold">@${user.username}</span>`;
             btnLogin.onclick = (e) => {
                 e.preventDefault();
                 if (confirm('Çıkış yapılsın mı?')) {
@@ -327,7 +333,7 @@ function setupHeaderInteractions() {
                 const title = btn.dataset.title;
 
                 if (email) {
-                    window.location.href = `mailto:${email}?subject = Teammate İlanı: ${title}& body=Merhaba, ilanını gördüm...`;
+                    window.location.href = `mailto:${email}?subject=Teammate İlanı: ${title}&body=Merhaba, ilanını gördüm...`;
                 } else {
                     alert('Kullanıcı e-postası bulunamadı.');
                 }

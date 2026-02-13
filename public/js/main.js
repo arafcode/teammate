@@ -107,13 +107,13 @@ function createListingCard(listing) {
     const safeUsername = escapeHtml(listing.username);
 
     return `
-    <div class="group bg-white rounded-2xl p-5 border border-gray-200/60 shadow-sm hover:shadow-md hover:border-gray-300/80 transition-all duration-300 cursor-pointer">
+        < div class="group bg-white rounded-2xl p-5 border border-gray-200/60 shadow-sm hover:shadow-md hover:border-gray-300/80 transition-all duration-300 cursor-pointer" >
         <div class="flex justify-between items-start mb-3">
             <div class="flex items-center gap-3">
                 <img src="${listing.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + listing.username}" alt="User" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100">
                 <div>
                     <h3 class="font-semibold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">${safeTitle}</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">@${safeUsername} • ${timeAgo(new Date(listing.created_at))}</p>
+                    <p class="text-xs text-slate-500 mt-0.5">@${safeUsername}</p>
                 </div>
             </div>
             <span class="px-2.5 py-1 rounded-full ${badgeColor} text-xs font-semibold border">${listing.category_name}</span>
@@ -131,9 +131,9 @@ function createListingCard(listing) {
                     ${escapeHtml(listing.location)}
                 </span>
                 ` : ''}
-                <span class="flex items-center gap-1.5">
+                <span class="flex items-center gap-1.5 text-orange-600 bg-orange-50 px-2 py-1 rounded-md">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    ${dateStr}'e kadar
+                    ${getRemainingTime(listing.expiry_date)}
                 </span>
                 <span class="flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
@@ -141,13 +141,14 @@ function createListingCard(listing) {
                 </span>
             </div>
             
-            <button class="text-sm font-medium text-slate-900 group-hover:text-blue-600 transition-colors flex items-center gap-1">
+            <button data-email="${listing.email}" data-title="${safeTitle}" 
+                class="text-sm font-medium text-slate-900 group-hover:text-blue-600 transition-colors flex items-center gap-1">
                 Mesaj At
                 <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
         </div>
-    </div>
-  `;
+    </div >
+        `;
 }
 
 // Helpers
@@ -167,8 +168,8 @@ function switchTab(type) {
     // Calculate position relative to container
     // The parent has horizontal padding (p-1 which is 4px)
     // We want the indicator to match the active button's dimensions and position
-    toggleIndicator.style.width = `${activeBtn.offsetWidth}px`;
-    toggleIndicator.style.height = `${activeBtn.offsetHeight}px`;
+    toggleIndicator.style.width = `${activeBtn.offsetWidth} px`;
+    toggleIndicator.style.height = `${activeBtn.offsetHeight} px`;
 
     // Move the indicator to the button's position
     // Since indicator is absolute top-1 left-1, we need to adjust transform.
@@ -218,6 +219,28 @@ function timeAgo(date) {
     interval = seconds / 60;
     if (interval > 1) return Math.floor(interval) + " dk önce";
     return "Az önce";
+}
+
+function getRemainingTime(expiryDateStr) {
+    const now = new Date();
+    const expiry = new Date(expiryDateStr);
+    const diffMs = expiry - now;
+
+    if (diffMs <= 0) return "Süresi Doldu";
+
+    const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (diffHrs > 24) {
+        const days = Math.floor(diffHrs / 24);
+        return `${days} gün kaldı`;
+    }
+
+    if (diffHrs > 0) {
+        return `${diffHrs} sa ${diffMins} dk kaldı`;
+    }
+
+    return `${diffMins} dk kaldı`;
 }
 
 function renderFilters(categoryType) {
@@ -274,7 +297,7 @@ function setupHeaderInteractions() {
     if (Auth.isAuthenticated() && user) {
         // Change Login button to Profile/Logout
         if (btnLogin) {
-            btnLogin.innerHTML = `<span class="text-blue-600 font-semibold">@${user.username}</span>`;
+            btnLogin.innerHTML = `< span class="text-blue-600 font-semibold" > @${user.username}</span > `;
             btnLogin.onclick = (e) => {
                 e.preventDefault();
                 if (confirm('Çıkış yapılsın mı?')) {
@@ -299,7 +322,15 @@ function setupHeaderInteractions() {
                     window.location.href = 'login.html';
                     return;
                 }
-                alert('Mesajlaşma özelliği yakında eklenecek!');
+
+                const email = btn.dataset.email;
+                const title = btn.dataset.title;
+
+                if (email) {
+                    window.location.href = `mailto:${email}?subject = Teammate İlanı: ${title}& body=Merhaba, ilanını gördüm...`;
+                } else {
+                    alert('Kullanıcı e-postası bulunamadı.');
+                }
             }
         }
     });
@@ -332,10 +363,10 @@ function setupHeaderInteractions() {
     if (btnCreate) {
         btnCreate.addEventListener('click', () => {
             if (!Auth.isAuthenticated()) {
-                window.location.href = 'login.html';
+                window.location.href = 'login.html?redirect=create-listing.html';
                 return;
             }
-            alert('İlan verme formu açılacak.');
+            window.location.href = 'create-listing.html';
         });
     }
 }

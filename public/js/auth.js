@@ -1,4 +1,5 @@
 const API_URL = '/api';
+window.API_URL = API_URL;
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');

@@ -21,7 +21,7 @@ class Listing {
 
     static async findAll() {
         const query = `
-      SELECT l.*, u.username, u.avatar_url, c.display_name as category_name, c.name as category_slug
+      SELECT l.*, u.username, u.email, u.avatar_url, c.display_name as category_name, c.name as category_slug
       FROM listings l
       JOIN users u ON l.user_id = u.id
       JOIN categories c ON l.category_id = c.id

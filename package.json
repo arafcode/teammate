@@ -22,12 +22,12 @@
     "express-validator": "^7.3.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.17.1"
-  },
-  "devDependencies": {
+    "mysql2": "^3.17.1",
     "autoprefixer": "^10.4.24",
-    "nodemon": "^3.1.11",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teammate - En İyi Takım Arkadaşını Bul</title>
+    <!-- <link href="./css/main.css" rel="stylesheet"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0f172a', // Slate 900
+                        secondary: '#334155', // Slate 700
+                        accent: '#2563eb', // Blue 600
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Custom scrollbar for premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+
+    <!-- Background Gradients -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-0 left-1/4 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob">
+        </div>
+        <div
+            class="absolute top-0 right-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute -bottom-8 left-1/3 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000">
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 group cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div
+                    class="relative w-10 h-10 flex items-center justify-center bg-slate-900 rounded-xl shadow-lg shadow-blue-900/10 group-hover:shadow-blue-900/20 transition-all duration-300 overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <span class="relative text-white font-bold text-xl z-10">T</span>
+                </div>
+                <span
+                    class="font-bold text-xl tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">teammate</span>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+                <a href="#how-it-works" class="hover:text-slate-900 transition-colors">Nasıl Çalışır?</a>
+                <a href="#features" class="hover:text-slate-900 transition-colors">Özellikler</a>
+                <a href="#listings-section" class="hover:text-slate-900 transition-colors">İlanlar</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button id="btn-login"
+                    class="hidden md:block text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                    Giriş Yap
+                </button>
+                <button id="btn-create-listing"
+                    class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-slate-900/20 transition-all hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-95">
+                    İlan Ver
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 md:pt-40 md:pb-28 px-4 text-center relative max-w-5xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold mb-8 animate-fade-in-up"
+            style="animation-delay: 0.1s;">
+            <span class="relative flex h-2 w-2">
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+            </span>
+            Yeni: Topluluk Özellikleri Yayında
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-tight animate-fade-in-up"
+            style="animation-delay: 0.2s;">
+            Oyunun kaderini<br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">takım
+                arkadaşın</span> belirler.
+        </h1>
+
+        <p class="text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up"
+            style="animation-delay: 0.3s;">
+            Solo girmekten sıkıldın mı? Teammate ile seninle aynı hedeflere sahip, yetenekli ve kafa dengi oyuncuları
+            saniyeler içinde bul.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up"
+            style="animation-delay: 0.4s;">
+            <a href="#listings-section"
+                class="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition-all hover:shadow-blue-600/40 hover:-translate-y-1">
+                Hemen Keşfet
+            </a>
+            <button
+                class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-50 text-slate-700 border border-gray-200 font-semibold rounded-xl transition-all hover:border-gray-300 flex items-center justify-center gap-2 group">
+                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Nasıl Çalışır?
+            </button>
+        </div>
+
+        <!-- Social Proof / Stats -->
+        <div class="mt-16 pt-8 border-t border-slate-200/60 flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 animate-fade-in-up"
+            style="animation-delay: 0.6s;">
+            <div class="text-center">
+                <div class="text-3xl font-bold text-slate-900">5,000+</div>
+                <div class="text-sm text-slate-500 font-medium">Aktif Oyuncu</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold text-slate-900">12,000+</div>
+                <div class="text-sm text-slate-500 font-medium">Oluşturulan İlan</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold text-slate-900">%98</div>
+                <div class="text-sm text-slate-500 font-medium">Olumlu Eşleşme</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white/50 backdrop-blur-sm border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                <!-- Feature 1 -->
+                <div
+                    class="p-8 rounded-3xl bg-white border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-slate-200/50 transition-all hover:-translate-y-1">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Kafa Dengi Oyuncular</h3>
+                    <p class="text-slate-500 leading-relaxed">Sadece yetenek seviyesine göre değil, oyun tarzına ve
+                        kişiliğine uygun arkadaşlar bul.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div
+                    class="p-8 rounded-3xl bg-white border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-slate-200/50 transition-all hover:-translate-y-1">
+                    <div
+                        class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Güvenli Topluluk</h3>
+                    <p class="text-slate-500 leading-relaxed">Toksik oyunculara yer yok. Profil doğrulama ve oylama
+                        sistemiyle kaliteli bir deneyim.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div
+                    class="p-8 rounded-3xl bg-white border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-slate-200/50 transition-all hover:-translate-y-1">
+                    <div
+                        class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Hızlı Eşleşme</h3>
+                    <p class="text-slate-500 leading-relaxed">Bekleme süresi yok. Anlık ilanlarla dakikalar içinde
+                        takımını kur ve oyuna başla.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Platform / Listings Section -->
+    <main id="listings-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900">Aktif İlanlar</h2>
+                <p class="text-slate-500 mt-1">Sana uygun ilanlara göz at veya kendi ilanını oluştur.</p>
+            </div>
+
+            <!-- Toggle Switch -->
+            <div class="bg-gray-100 p-1 rounded-xl inline-flex relative shadow-inner self-start md:self-auto">
+                <!-- Active Indicator (Animated by JS) -->
+                <div class="absolute left-1 top-1 w-[calc(50%-4px)] h-[calc(100%-8px)] bg-white rounded-lg shadow-sm transform transition-transform duration-300 ease-out z-0"
+                    id="toggle-indicator"></div>
+
+                <button id="btn-virtual"
+                    class="relative z-10 px-6 py-2 text-sm font-medium text-slate-900 rounded-lg focus:outline-none transition-colors duration-200"
+                    onclick="switchTab('virtual')">
+                    Sanal Ortam
+                </button>
+                <button id="btn-real"
+                    class="relative z-10 px-6 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 rounded-lg focus:outline-none transition-colors duration-200"
+                    onclick="switchTab('real')">
+                    Gerçek Hayat
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div id="filters-container" class="flex flex-wrap gap-2 mb-8">
+            <button
+                class="px-4 py-2 bg-slate-900 text-white border border-slate-900 rounded-full text-sm font-medium shadow-sm hover:bg-slate-800 transition-colors">Tümü</button>
+            <button
+                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">League
+                of Legends</button>
+            <button
+                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">Valorant</button>
+            <button
+                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">CS2</button>
+            <button
+                class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium shadow-sm hover:border-slate-300 hover:text-slate-900 transition-colors">Dota
+                2</button>
+        </div>
+
+        <!-- Listings Grid (Responsive Grid) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="listings-container">
+            <!-- Dynamic Content Loading -->
+            <div class="h-64 bg-slate-100 rounded-2xl animate-pulse"></div>
+            <div class="h-64 bg-slate-100 rounded-2xl animate-pulse"></div>
+            <div class="h-64 bg-slate-100 rounded-2xl animate-pulse"></div>
+        </div>
+
+        <div class="mt-12 text-center">
+            <button
+                class="px-8 py-3 bg-white text-slate-700 border border-slate-200 font-medium rounded-xl hover:bg-gray-50 hover:border-slate-300 transition-all shadow-sm">
+                Daha Fazla Göster
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div
+                    class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                    T</div>
+                <span class="font-bold text-lg text-slate-900">teammate</span>
+            </div>
+            <p class="text-slate-500 text-sm">© 2024 Teammate. Tüm hakları saklıdır.</p>
+            <div class="flex gap-6 text-slate-400">
+                <a href="#" class="hover:text-slate-900 transition-colors"><svg class="w-5 h-5" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                    </svg></a>
+                <a href="#" class="hover:text-slate-900 transition-colors"><svg class="w-5 h-5" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.072 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.85-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/auth.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>

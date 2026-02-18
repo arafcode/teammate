@@ -5,9 +5,47 @@
 
 @theme {
   --font-sans: 'Inter', sans-serif;
-  --color-primary: #0f172a;
+  --color-primary: #37352F;
   --color-secondary: #334155;
-  --color-accent: #3b82f6;
+  --color-accent: #2563eb;
+
+  --color-notion-bg: #F7F6F3;
+  --color-notion-text: #37352F;
+  --color-notion-dim: rgba(55, 53, 47, 0.65);
+  --color-notion-border: rgba(55, 53, 47, 0.09);
+
+  --animate-blob: blob 7s infinite;
+  --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 @layer base {

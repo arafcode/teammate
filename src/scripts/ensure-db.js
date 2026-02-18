@@ -9,24 +9,37 @@ async function ensureDatabase() {
         console.log('Ensuring database schema...');
         const schemaSql = fs.readFileSync(schemaPath, 'utf8');
 
-        // Remove comments? No, mysql2 handles them usually, or split by ;
         // We split by ; and ignore empty lines
         const queries = schemaSql
             .split(';')
             .map(query => query.trim())
             .filter(query => query.length > 0);
 
-        // Check if categories table needs fix (missing display_name)
+        // Check if users table needs columns (Railway migration)
         try {
-            const [cols] = await db.execute("SHOW COLUMNS FROM categories LIKE 'display_name'");
-            if (cols.length === 0) {
-                console.log('Fixing categories table schema...');
-                await db.execute('SET FOREIGN_KEY_CHECKS = 0');
-                await db.execute('DROP TABLE IF EXISTS categories');
-                await db.execute('SET FOREIGN_KEY_CHECKS = 1');
+            const extraColumns = [
+                "ADD COLUMN avatar_url VARCHAR(500)",
+                "ADD COLUMN bio TEXT",
+                "ADD COLUMN social_links JSON",
+                "ADD COLUMN city VARCHAR(50)",
+                "ADD COLUMN gender VARCHAR(20)",
+                "ADD COLUMN birth_date DATE",
+                "ADD COLUMN availability_status ENUM('online', 'offline', 'looking_for_team', 'in_game') DEFAULT 'offline'"
+            ];
+
+            for (const colDef of extraColumns) {
+                try {
+                    await db.execute(`ALTER TABLE users ${colDef}`);
+                    console.log(`Added column to users: ${colDef}`);
+                } catch (e) {
+                    // Ignore "Duplicate column name" error
+                    if (!e.message.includes("Duplicate column name")) {
+                        // console.warn(`Column add warning: ${e.message}`);
+                    }
+                }
             }
         } catch (e) {
-            // Table might not exist, ignore
+            console.error("User table fix failed:", e);
         }
 
         for (const query of queries) {
@@ -36,17 +49,16 @@ async function ensureDatabase() {
 
                 await db.execute(query);
             } catch (err) {
-                // If error is "Table exists", ignore? 
-                // schema.sql uses IF NOT EXISTS, so should be fine.
-                console.warn('Query warning:', err.message);
+                // Ignore "Table exists" warnings
+                if (!err.message.includes("already exists")) {
+                    console.warn('Query warning:', err.message);
+                }
             }
         }
 
         console.log('Database schema ensured.');
     } catch (error) {
         console.error('Database initialization error:', error);
-        // Do not exit process, let app try to run? Or fail hard?
-        // Fail hard is safer for debugging
         throw error;
     }
 }

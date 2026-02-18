@@ -32,7 +32,6 @@ async function ensureDatabase() {
                     await db.execute(`ALTER TABLE users ${colDef}`);
                     console.log(`Added column to users: ${colDef}`);
                 } catch (e) {
-                    // Ignore "Duplicate column name" error
                     if (!e.message.includes("Duplicate column name")) {
                         // console.warn(`Column add warning: ${e.message}`);
                     }
@@ -40,6 +39,33 @@ async function ensureDatabase() {
             }
         } catch (e) {
             console.error("User table fix failed:", e);
+        }
+
+        // Fix Categories Table (Missing display_name)
+        try {
+            const [cols] = await db.execute("SHOW COLUMNS FROM categories LIKE 'display_name'");
+            if (cols.length === 0) {
+                console.log('Fixing categories table schema...');
+                await db.execute('ALTER TABLE categories ADD COLUMN display_name VARCHAR(50) NOT NULL DEFAULT ""');
+                await db.execute('UPDATE categories SET display_name = "Sanal Ortam" WHERE name = "virtual"');
+                await db.execute('UPDATE categories SET display_name = "Gerçek Hayat" WHERE name = "real_life"');
+            }
+        } catch (e) {
+            // Table might not exist yet
+        }
+
+        // Fix Listings Table (Missing is_active or subcategory)
+        try {
+            await db.execute("ALTER TABLE listings ADD COLUMN is_active BOOLEAN DEFAULT TRUE");
+            console.log('Added is_active to listings');
+        } catch (e) {
+            // Ignore if exists
+        }
+        try {
+            await db.execute("ALTER TABLE listings ADD COLUMN subcategory VARCHAR(50)");
+            console.log('Added subcategory to listings');
+        } catch (e) {
+            // Ignore
         }
 
         for (const query of queries) {

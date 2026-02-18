@@ -5,7 +5,7 @@ class User {
         const { username, email, password_hash, city, gender, birth_date } = userData;
         const [result] = await db.execute(
             'INSERT INTO users (username, email, password_hash, city, gender, birth_date) VALUES (?, ?, ?, ?, ?, ?)',
-            [username, email, password_hash, city, gender, birth_date]
+            [username, email, password_hash, city || null, gender || null, birth_date || null]
         );
         return result.insertId;
     }

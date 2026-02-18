@@ -20,9 +20,14 @@ router.post(
         check('title', 'Başlık gereklidir.').not().isEmpty(),
         check('description', 'Açıklama gereklidir.').not().isEmpty(),
         check('category_slug', 'Kategori (virtual/real_life) gereklidir.').isIn(['virtual', 'real_life']),
-        check('expiry_date', 'Geçerlilik tarihi gereklidir.').toDate()
+        check('activity_date', 'Etkinlik tarihi gereklidir.').not().isEmpty()
     ],
     listingController.createListing
 );
+
+// @route   DELETE /api/listings/:id
+// @desc    İlanı sil (soft delete)
+// @access  Private
+router.delete('/:id', authMiddleware, listingController.deleteListing);
 
 module.exports = router;

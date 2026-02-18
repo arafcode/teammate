@@ -29,20 +29,90 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: rgba(37, 37, 37, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #404040;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            transform: translateX(100%);
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .toast.success {
+            border-left: 4px solid #10B981;
+        }
+
+        .toast.error {
+            border-left: 4px solid #EF4444;
+        }
+
+        .toast.info {
+            border-left: 4px solid #3B82F6;
+        }
+
+        .toast.hiding {
+            animation: slideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 
-<body style="background-color: #F7F6F3; color: #37352F;" class="font-sans antialiased">
+<body style="background-color: #191919; color: #D4D4D4;" class="font-sans antialiased">
 
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header class="bg-[#2F2F2F] border-gray-700 sticky top-0 z-50">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 group">
                 <div
-                    class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold group-hover:bg-blue-600 transition-colors">
+                    class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-black font-bold shadow-lg shadow-white/10 transition-all">
                     T</div>
-                <span class="font-bold text-lg text-[#37352F]">teammate</span>
+                <span class="font-bold text-lg text-white tracking-wide">teammate</span>
             </a>
-            <a href="index.html" class="text-sm font-medium text-slate-500 hover:text-[#37352F] transition-colors">
+            <a href="index.html" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">
                 İptal
             </a>
         </div>
@@ -50,67 +120,136 @@
 
     <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-[#37352F]">Yeni İlan Oluştur</h1>
-            <p class="text-slate-500 mt-1">Takım arkadaşını bulmak için detayları gir.</p>
+            <h1 class="text-2xl font-bold text-[#D4D4D4]">Yeni İlan Oluştur</h1>
+            <p class="text-gray-400 mt-1">Takım arkadaşını bulmak için detayları gir.</p>
         </div>
 
         <form id="create-listing-form" class="space-y-8">
 
-            <!-- Category Selection -->
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                <label class="block text-sm font-medium text-slate-700 mb-4">Ortam Seçimi</label>
+            <!-- Category & Subcategory -->
+            <div class="space-y-4">
+                <label class="block text-sm font-medium text-gray-400">Ortam Seçimi</label>
                 <div class="grid grid-cols-2 gap-4">
                     <label class="relative cursor-pointer group">
-                        <input type="radio" name="category_slug" value="virtual" class="peer sr-only" checked>
+                        <input type="radio" name="category_slug" value="virtual" class="peer sr-only" checked
+                            onchange="updateSubcategories()">
                         <div
-                            class="p-4 rounded-xl border-2 border-gray-200 hover:border-blue-400 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all text-center">
-                            <div class="font-semibold text-[#37352F] peer-checked:text-blue-700">Sanal Ortam</div>
-                            <div class="text-xs text-slate-500 mt-1">Oyun, Discord vb.</div>
+                            class="p-4 rounded-xl bg-[#202020] border-2 border-gray-700 hover:border-gray-500 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition-all text-center h-full flex flex-col items-center justify-center gap-2">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center peer-checked:bg-blue-500 peer-checked:text-white transition-colors">
+                                <svg class="w-5 h-5 text-gray-400 peer-checked:text-white" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-bold text-gray-300 peer-checked:text-white mb-0.5">Sanal Ortam</div>
+                                <div class="text-xs text-gray-500">Oyun, Discord vb.</div>
+                            </div>
                         </div>
                     </label>
                     <label class="relative cursor-pointer group">
-                        <input type="radio" name="category_slug" value="real_life" class="peer sr-only">
+                        <input type="radio" name="category_slug" value="real_life" class="peer sr-only"
+                            onchange="updateSubcategories()">
                         <div
-                            class="p-4 rounded-xl border-2 border-gray-200 hover:border-green-400 peer-checked:border-green-600 peer-checked:bg-green-50 transition-all text-center">
-                            <div class="font-semibold text-[#37352F] peer-checked:text-green-700">Gerçek Hayat</div>
-                            <div class="text-xs text-slate-500 mt-1">Halı saha, Spor vb.</div>
+                            class="p-4 rounded-xl bg-[#202020] border-2 border-gray-700 hover:border-gray-500 peer-checked:border-green-500 peer-checked:bg-green-500/10 transition-all text-center h-full flex flex-col items-center justify-center gap-2">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center peer-checked:bg-green-500 peer-checked:text-white transition-colors">
+                                <svg class="w-5 h-5 text-gray-400 peer-checked:text-white" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-bold text-gray-300 peer-checked:text-white mb-0.5">Gerçek Hayat</div>
+                                <div class="text-xs text-gray-500">Halı saha, Spor vb.</div>
+                            </div>
                         </div>
                     </label>
+                </div>
+
+                <!-- Subcategory Dropdown -->
+                <div>
+                    <label for="subcategory" class="block text-sm font-medium text-gray-400 mb-2">Alt Kategori</label>
+                    <select id="subcategory" name="subcategory" required
+                        class="w-full px-4 py-4 rounded-xl border border-gray-700 focus:ring-2 focus:ring-white/20 focus:border-white bg-[#252525] text-[#D4D4D4]">
+                        <!-- Populated by JS -->
+                    </select>
                 </div>
             </div>
 
             <!-- Basic Info -->
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-6">
+            <div class="space-y-6">
                 <div>
-                    <label for="title" class="block text-sm font-medium text-slate-700 mb-2">Başlık</label>
+                    <label for="title" class="block text-sm font-medium text-gray-400 mb-2">Başlık</label>
                     <input type="text" id="title" name="title" required
                         placeholder="Örn: Dereceli maç için duo aranıyor"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 focus:bg-white placeholder-gray-400">
+                        class="w-full px-4 py-4 rounded-xl border border-gray-700 focus:ring-2 focus:ring-white/20 focus:border-white transition-colors bg-[#252525] text-[#D4D4D4] placeholder-gray-500">
                 </div>
 
                 <div>
-                    <label for="description" class="block text-sm font-medium text-slate-700 mb-2">Açıklama</label>
+                    <label for="description" class="block text-sm font-medium text-gray-400 mb-2">Açıklama</label>
                     <textarea id="description" name="description" required rows="4"
                         placeholder="Beklentilerin, rank durumun veya etkinlik detayları..."
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 focus:bg-white placeholder-gray-400"></textarea>
+                        class="w-full px-4 py-4 rounded-xl border border-gray-700 focus:ring-2 focus:ring-white/20 focus:border-white transition-colors bg-[#252525] text-[#D4D4D4] placeholder-gray-500"></textarea>
                 </div>
             </div>
 
             <!-- Details -->
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-6">
+            <div class="space-y-6">
+                <!-- Duration Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">İlan Süresi</label>
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="duration" value="15" class="peer sr-only">
+                            <div
+                                class="px-2 py-3 rounded-lg bg-[#252525] border border-gray-700 peer-checked:bg-white peer-checked:text-black peer-checked:font-bold text-center text-sm transition-all hover:bg-[#303030]">
+                                15 dk</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="duration" value="30" class="peer sr-only">
+                            <div
+                                class="px-2 py-3 rounded-lg bg-[#252525] border border-gray-700 peer-checked:bg-white peer-checked:text-black peer-checked:font-bold text-center text-sm transition-all hover:bg-[#303030]">
+                                30 dk</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="duration" value="60" class="peer sr-only" checked>
+                            <div
+                                class="px-2 py-3 rounded-lg bg-[#252525] border border-gray-700 peer-checked:bg-white peer-checked:text-black peer-checked:font-bold text-center text-sm transition-all hover:bg-[#303030]">
+                                1 Sa</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="duration" value="120" class="peer sr-only">
+                            <div
+                                class="px-2 py-3 rounded-lg bg-[#252525] border border-gray-700 peer-checked:bg-white peer-checked:text-black peer-checked:font-bold text-center text-sm transition-all hover:bg-[#303030]">
+                                2 Sa</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="duration" value="360" class="peer sr-only">
+                            <div
+                                class="px-2 py-3 rounded-lg bg-[#252525] border border-gray-700 peer-checked:bg-white peer-checked:text-black peer-checked:font-bold text-center text-sm transition-all hover:bg-[#303030]">
+                                6 Sa</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="duration" value="1440" class="peer sr-only">
+                            <div
+                                class="px-2 py-3 rounded-lg bg-[#252525] border border-gray-700 peer-checked:bg-white peer-checked:text-black peer-checked:font-bold text-center text-sm transition-all hover:bg-[#303030]">
+                                24 Sa</div>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                        <label for="activity_date" class="block text-sm font-medium text-slate-700 mb-2">Etkinlik
-                            Zamanı</label>
-                        <input type="datetime-local" id="activity_date" name="activity_date" required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 focus:bg-white">
-                    </div>
-
-                    <div>
-                        <label for="max_participants" class="block text-sm font-medium text-slate-700 mb-2">Kişi
+                        <label for="max_participants" class="block text-sm font-medium text-gray-400 mb-2">Kişi
                             Sayısı</label>
                         <select id="max_participants" name="max_participants"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 focus:bg-white">
+                            class="w-full px-4 py-4 rounded-xl border border-gray-700 focus:ring-2 focus:ring-white/20 focus:border-white bg-[#252525] text-[#D4D4D4]">
                             <option value="1">1 Kişi</option>
                             <option value="2">2 Kişi</option>
                             <option value="3">3 Kişi</option>
@@ -122,26 +261,26 @@
 
                 <!-- Location (Conditional) -->
                 <div id="location-field" class="hidden">
-                    <label for="location" class="block text-sm font-medium text-slate-700 mb-2">Konum / Mekan</label>
+                    <label for="location" class="block text-sm font-medium text-gray-400 mb-2">Konum / Mekan</label>
                     <input type="text" id="location" name="location" placeholder="Örn: Kadıköy Halı Saha, İstanbul"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 focus:bg-white">
+                        class="w-full px-4 py-4 rounded-xl border border-gray-700 focus:ring-2 focus:ring-white/20 focus:border-white bg-[#252525] text-[#D4D4D4]">
                 </div>
             </div>
 
             <!-- Submit -->
             <div class="flex items-center justify-end gap-4 pt-4">
                 <a href="index.html"
-                    class="px-6 py-3 text-sm font-medium text-slate-600 hover:text-[#37352F] transition-colors">İptal</a>
+                    class="px-6 py-3 text-sm font-medium text-gray-300 hover:text-white transition-colors">İptal</a>
                 <button type="submit" id="btn-submit"
-                    class="px-8 py-3 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl shadow-lg shadow-slate-900/20 transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed">
+                    class="px-8 py-3 bg-white hover:bg-gray-200 text-black font-bold rounded-xl shadow-lg shadow-white/10 transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed">
                     İlanı Yayınla
                 </button>
             </div>
         </form>
     </main>
 
-    <script src="./js/auth.js"></script>
-    <script src="./js/create-listing.js"></script>
+    <script src="./js/auth.js?v=2"></script>
+    <script src="./js/create-listing.js?v=2"></script>
 </body>
 
 </html>

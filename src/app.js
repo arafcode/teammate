@@ -8,11 +8,21 @@ require('dotenv').config();
 const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const listingRoutes = require('./routes/listingRoutes');
+const messageRoutes = require('./routes/messageRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const communityRoutes = require('./routes/communityRoutes');
+const groupRoutes = require('./routes/groupRoutes');
+const eventRoutes = require('./routes/eventRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.use((req, res, next) => {
+    console.log(`[REQUEST] ${req.method} ${req.url}`);
+    next();
+});
 app.use(helmet({
     contentSecurityPolicy: false,
 }));
@@ -23,6 +33,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/community', communityRoutes);
+app.use('/api/groups', groupRoutes);
+app.use('/api/events', eventRoutes);
 
 // Basit Test Rotası
 app.get('/api/health', (req, res) => {

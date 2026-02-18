@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topluluk - Teammate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #191919;
+            color: #D4D4D4;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .category-btn.active {
+            background: white;
+            color: black;
+        }
+
+        .post-card {
+            transition: all 0.2s;
+        }
+
+        .post-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .like-btn.liked {
+            color: #ef4444;
+        }
+
+        .like-btn.liked svg {
+            fill: #ef4444;
+        }
+
+        @keyframes blob {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .comment-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .comment-section.open {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body class="bg-[#191919] min-h-screen text-[#D4D4D4] font-sans antialiased">
+
+    <!-- Background Gradients -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-0 left-1/4 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob">
+        </div>
+        <div
+            class="absolute top-0 right-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute -bottom-8 left-1/3 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000">
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header
+        class="fixed w-full z-50 bg-[#191919]/90 backdrop-blur-md border-b border-gray-800 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 group cursor-pointer" onclick="window.location.href='home.html'">
+                <div
+                    class="relative w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-lg group-hover:shadow-white/20 transition-all duration-300 overflow-hidden">
+                    <span class="relative text-black font-bold text-xl z-10">T</span>
+                </div>
+                <span
+                    class="font-bold text-xl tracking-tight text-white group-hover:text-gray-300 transition-colors">teammate</span>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                <a href="home.html#listings-section" class="hover:text-white transition-colors">İlanlar</a>
+                <a href="community.html" class="text-white font-semibold transition-colors">Topluluk</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <!-- Auth Actions (Hidden by default, toggled by JS) -->
+                <div id="auth-actions" class="hidden flex items-center gap-4 mr-2">
+                    <a href="messages.html" class="relative group p-2 text-gray-400 hover:text-white transition-colors"
+                        title="Mesajlar">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                            </path>
+                        </svg>
+                        <span id="nav-msg-badge"
+                            class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#191919] hidden"></span>
+                    </a>
+
+                    <div class="relative group">
+                        <button id="btn-notifications"
+                            class="p-2 text-gray-400 hover:text-white transition-colors relative" title="Bildirimler">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                </path>
+                            </svg>
+                            <span id="nav-notif-badge"
+                                class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#191919] hidden"></span>
+                        </button>
+                        <!-- Dropdown -->
+                        <div id="notification-dropdown"
+                            class="hidden absolute right-0 mt-2 w-80 bg-[#252525] border border-gray-700 rounded-xl shadow-xl py-2 z-50 transform origin-top-right transition-all">
+                            <div class="px-4 py-2 border-b border-gray-700 flex justify-between items-center">
+                                <span class="font-semibold text-white">Bildirimler</span>
+                            </div>
+                            <div id="notification-list" class="max-h-64 overflow-y-auto">
+                                <p class="text-center text-gray-500 py-4 text-sm">Bildirim yok.</p>
+                            </div>
+                            <a href="#"
+                                class="block text-center py-2 text-xs text-blue-400 hover:text-blue-300 border-t border-gray-700">Tümünü
+                                Gör</a>
+                        </div>
+                    </div>
+
+                    <!-- Avatar Removed by User Request -->
+                </div>
+
+                <button id="btn-login"
+                    class="hidden md:block text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                    <!-- Dynamic -->
+                </button>
+
+                <button id="btn-create-listing"
+                    class="bg-white text-black px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-200 transition-all active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.2)]">
+                    İlan Ver
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Sub Navigation -->
+        <div class="flex items-center gap-6 mb-8 border-b border-gray-800 pb-4">
+            <a href="community.html"
+                class="text-white text-sm font-bold border-b-2 border-white pb-1 transition-colors">📝 Feed</a>
+            <a href="groups.html" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">🎮
+                Gruplar</a>
+            <a href="events.html" class="text-gray-400 hover:text-white text-sm font-medium transition-colors">📅
+                Etkinlikler</a>
+        </div>
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-white mb-2">Topluluk</h1>
+            <p class="text-gray-400">Paylaşımlarını yap, yeni insanlarla tanış.</p>
+        </div>
+
+        <!-- Create Post (only visible to logged in users) -->
+        <div id="create-post-area" class="glass-panel rounded-2xl p-5 mb-6 hidden">
+            <div class="flex items-start gap-4">
+                <img id="post-user-avatar" src="" alt="Avatar"
+                    class="w-10 h-10 rounded-full bg-[#252525] border border-gray-700 object-cover flex-shrink-0">
+                <div class="flex-1">
+                    <textarea id="post-content" rows="3"
+                        class="w-full bg-[#0f0f0f] border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-white/20 focus:outline-none transition-colors resize-none"
+                        placeholder="Ne düşünüyorsun? Paylaş..."></textarea>
+                    <div class="flex items-center justify-between mt-3">
+                        <div class="flex gap-2">
+                            <button
+                                class="post-category-btn active px-3 py-1.5 rounded-lg text-xs font-medium bg-white text-black transition-all"
+                                data-cat="general" onclick="selectPostCategory(this)">💬 Genel</button>
+                            <button
+                                class="post-category-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#252525] text-gray-400 border border-gray-700 hover:border-gray-500 transition-all"
+                                data-cat="game" onclick="selectPostCategory(this)">🎮 Oyun</button>
+                            <button
+                                class="post-category-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#252525] text-gray-400 border border-gray-700 hover:border-gray-500 transition-all"
+                                data-cat="sport" onclick="selectPostCategory(this)">⚽ Spor</button>
+                            <button
+                                class="post-category-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#252525] text-gray-400 border border-gray-700 hover:border-gray-500 transition-all"
+                                data-cat="question" onclick="selectPostCategory(this)">❓ Soru</button>
+                        </div>
+                        <button onclick="submitPost()"
+                            class="bg-white hover:bg-gray-200 text-black px-5 py-2 rounded-xl text-sm font-bold shadow-lg shadow-white/10 transition-all hover:shadow-white/20 hover:-translate-y-0.5 active:translate-y-0 active:scale-95">
+                            Paylaş
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guest prompt -->
+        <div id="guest-prompt" class="glass-panel rounded-2xl p-6 mb-6 text-center hidden">
+            <p class="text-gray-400 mb-3">Paylaşım yapmak ve beğenmek için giriş yapın.</p>
+            <a href="login.html"
+                class="inline-block bg-white hover:bg-gray-200 text-black px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-white/10 transition-all">
+                Giriş Yap
+            </a>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+            <button class="category-btn active px-4 py-2 rounded-xl text-sm font-medium transition-all"
+                data-filter="all" onclick="filterPosts(this)">🌐 Tümü</button>
+            <button
+                class="category-btn px-4 py-2 rounded-xl text-sm font-medium bg-[#252525] text-gray-400 border border-gray-700 transition-all"
+                data-filter="general" onclick="filterPosts(this)">💬 Genel</button>
+            <button
+                class="category-btn px-4 py-2 rounded-xl text-sm font-medium bg-[#252525] text-gray-400 border border-gray-700 transition-all"
+                data-filter="game" onclick="filterPosts(this)">🎮 Oyun</button>
+            <button
+                class="category-btn px-4 py-2 rounded-xl text-sm font-medium bg-[#252525] text-gray-400 border border-gray-700 transition-all"
+                data-filter="sport" onclick="filterPosts(this)">⚽ Spor</button>
+            <button
+                class="category-btn px-4 py-2 rounded-xl text-sm font-medium bg-[#252525] text-gray-400 border border-gray-700 transition-all"
+                data-filter="question" onclick="filterPosts(this)">❓ Soru-Cevap</button>
+        </div>
+
+        <!-- Posts Feed -->
+        <div id="posts-feed">
+            <div class="text-center text-gray-500 py-12">
+                <div class="animate-pulse">Yükleniyor...</div>
+            </div>
+        </div>
+
+        <!-- Load More -->
+        <div id="load-more-container" class="text-center py-6 hidden">
+            <button onclick="loadMorePosts()"
+                class="bg-[#252525] hover:bg-[#333] text-gray-300 px-6 py-2.5 rounded-xl text-sm font-medium border border-gray-700 transition-all">
+                Daha Fazla Göster
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-24 right-4 z-[100] flex flex-col gap-3"></div>
+
+    <script src="js/auth.js?v=20"></script>
+    <script src="js/header.js?v=20"></script>
+    <script src="js/community.js?v=1"></script>
+</body>
+
+</html>

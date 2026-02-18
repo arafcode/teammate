@@ -84,12 +84,12 @@ const Auth = {
     login: (token, user) => {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     },
     logout: () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        window.location.reload();
+        window.location.href = 'index.html';
     },
     getToken: () => localStorage.getItem('token'),
     getUser: () => JSON.parse(localStorage.getItem('user')),

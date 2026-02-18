@@ -4,15 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teammate - En İyi Takım Arkadaşını Bul</title>
-    <!-- <link href="./css/main.css" rel="stylesheet"> -->
+    <title>Ana Sayfa - Teammate</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Redirect to home.html if logged in
-        if (localStorage.getItem('token')) {
-            window.location.href = 'home.html';
-        }
-    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -158,9 +151,6 @@
     <!-- Toast Container -->
     <div id="toast-container"></div>
 
-    <!-- DEBUG BANNER -->
-
-
     <!-- Background Gradients -->
     <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div
@@ -188,20 +178,53 @@
             </div>
 
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
-                <a href="#how-it-works" class="hover:text-white transition-colors">Nasıl Çalışır?</a>
-                <a href="#features" class="hover:text-white transition-colors">Özellikler</a>
-                <a href="#listings-section" class="hover:text-white transition-colors">İlanlar</a>
+                <a href="#listings-section" class="text-white font-semibold transition-colors">İlanlar</a>
+                <a href="community.html" class="hover:text-white transition-colors">Topluluk</a>
             </nav>
 
             <div class="flex items-center gap-4">
+                <!-- Auth Actions (Hidden by default, toggled by JS) -->
+                <div id="auth-actions" class="hidden flex items-center gap-4 mr-2">
+                    <a href="messages.html" class="relative group p-2 text-gray-400 hover:text-white transition-colors"
+                        title="Mesajlar">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                            </path>
+                        </svg>
+                        <span id="nav-msg-badge"
+                            class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#191919] hidden"></span>
+                    </a>
+                    <div class="relative group">
+                        <button id="btn-notifications"
+                            class="p-2 text-gray-400 hover:text-white transition-colors relative" title="Bildirimler">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                </path>
+                            </svg>
+                            <span id="nav-notif-badge"
+                                class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#191919] hidden"></span>
+                        </button>
+                        <!-- Dropdown -->
+                        <div id="notification-dropdown"
+                            class="hidden absolute right-0 mt-2 w-80 bg-[#252525] border border-gray-700 rounded-xl shadow-xl py-2 z-50 transform origin-top-right">
+                            <div class="px-4 py-2 border-b border-gray-700">
+                                <h3 class="text-sm font-bold text-white">Bildirimler</h3>
+                            </div>
+                            <div id="notification-list" class="max-h-64 overflow-y-auto">
+                                <div class="p-4 text-center text-gray-500 text-sm">Bildirim yok</div>
+                            </div>
+                            <a href="messages.html"
+                                class="block text-center py-2 text-xs text-blue-400 hover:text-blue-300 border-t border-gray-700">Tümünü
+                                Gör</a>
+                        </div>
+                    </div>
+                </div>
+
                 <button id="btn-login"
                     class="hidden md:block text-sm font-medium text-gray-300 hover:text-white transition-colors">
-                    Giriş Yap
-                </button>
-                <button id="btn-register"
-                    class="hidden md:block text-sm font-medium text-white hover:text-gray-200 px-4 py-2 border border-gray-600 rounded-lg hover:border-gray-400 transition-all"
-                    onclick="window.location.href='register.html'">
-                    Kayıt Ol
+                    <!-- Dinamik olarak kullanıcı adı buraya gelecek -->
                 </button>
                 <button id="btn-create-listing"
                     class="bg-white hover:bg-gray-200 text-black text-sm font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-white/10 transition-all hover:shadow-white/20 hover:-translate-y-0.5 active:translate-y-0 active:scale-95">
@@ -211,122 +234,8 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="pt-32 pb-20 md:pt-40 md:pb-28 px-4 text-center relative max-w-5xl mx-auto">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-semibold mb-8 animate-fade-in-up"
-            style="animation-delay: 0.1s;">
-            <span class="relative flex h-2 w-2">
-                <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-            </span>
-            Yeni: Topluluk Özellikleri Yayında
-        </div>
-
-        <h1 class="text-5xl md:text-7xl font-extrabold text-[#D4D4D4] tracking-tight mb-8 leading-tight animate-fade-in-up"
-            style="animation-delay: 0.2s;">
-            Oyunun kaderini<br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">takım
-                arkadaşın</span> belirler.
-        </h1>
-
-        <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up"
-            style="animation-delay: 0.3s;">
-            Solo girmekten sıkıldın mı? Teammate ile seninle aynı hedeflere sahip, yetenekli ve kafa dengi oyuncuları
-            saniyeler içinde bul.
-        </p>
-
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up"
-            style="animation-delay: 0.4s;">
-            <a href="#listings-section"
-                class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-200 text-black font-bold rounded-xl shadow-lg shadow-white/10 transition-all hover:shadow-white/20 hover:-translate-y-1">
-                Hemen Keşfet
-            </a>
-            <button
-                class="w-full sm:w-auto px-8 py-4 bg-transparent hover:bg-white/5 text-gray-300 border border-gray-600 font-semibold rounded-xl transition-all hover:border-gray-400 hover:text-white flex items-center justify-center gap-2 group">
-                <svg class="w-5 h-5 text-gray-500 group-hover:text-white transition-colors" fill="none"
-                    stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
-                    </path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                Nasıl Çalışır?
-            </button>
-        </div>
-
-        <!-- Social Proof / Stats -->
-        <div class="mt-16 pt-8 border-t border-gray-800/60 flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 animate-fade-in-up"
-            style="animation-delay: 0.6s;">
-            <div class="text-center">
-                <div class="text-3xl font-bold text-[#D4D4D4]">5,000+</div>
-                <div class="text-sm text-gray-400 font-medium">Aktif Oyuncu</div>
-            </div>
-            <div class="text-center">
-                <div class="text-3xl font-bold text-[#D4D4D4]">12,000+</div>
-                <div class="text-sm text-gray-400 font-medium">Oluşturulan İlan</div>
-            </div>
-            <div class="text-center">
-                <div class="text-3xl font-bold text-[#D4D4D4]">%98</div>
-                <div class="text-sm text-gray-400 font-medium">Olumlu Eşleşme</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                <!-- Feature 1 -->
-                <div
-                    class="p-8 rounded-3xl bg-[#252525] border border-gray-800 shadow-xl shadow-black/20 hover:shadow-2xl hover:bg-[#2A2A2A] transition-all hover:-translate-y-1">
-                    <div
-                        class="w-14 h-14 bg-blue-900/30 text-blue-400 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Kafa Dengi Oyuncular</h3>
-                    <p class="text-gray-400 leading-relaxed">Sadece yetenek seviyesine göre değil, oyun tarzına ve
-                        kişiliğine uygun arkadaşlar bul.</p>
-                </div>
-
-                <!-- Feature 2 -->
-                <div
-                    class="p-8 rounded-3xl bg-[#252525] border border-gray-800 shadow-xl shadow-black/20 hover:shadow-2xl hover:bg-[#2A2A2A] transition-all hover:-translate-y-1">
-                    <div class="w-14 h-14 bg-gray-800 text-white rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Güvenli Topluluk</h3>
-                    <p class="text-gray-400 leading-relaxed">Toksik oyunculara yer yok. Profil doğrulama ve oylama
-                        sistemiyle kaliteli bir deneyim.</p>
-                </div>
-
-                <!-- Feature 3 -->
-                <div
-                    class="p-8 rounded-3xl bg-[#252525] border border-gray-800 shadow-xl shadow-black/20 hover:shadow-2xl hover:bg-[#2A2A2A] transition-all hover:-translate-y-1">
-                    <div class="w-14 h-14 bg-gray-800 text-white rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Hızlı Eşleşme</h3>
-                    <p class="text-gray-400 leading-relaxed">Bekleme süresi yok. Anlık ilanlarla dakikalar içinde
-                        takımını kur ve oyuna başla.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Main Platform / Listings Section -->
-    <main id="listings-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+    <main id="listings-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-32">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
             <div>
                 <h2 class="text-2xl font-bold text-[#D4D4D4]">Aktif İlanlar</h2>
@@ -379,8 +288,9 @@
 
         <div class="mt-12 text-center">
             <button
-                class="px-8 py-3 bg-[#252525] text-white border border-gray-700 font-medium rounded-xl hover:bg-[#333] hover:border-gray-500 transition-all shadow-sm">
+                class="px-8 py-3 bg-white/5 backdrop-blur-sm border border-white/10 text-white font-bold rounded-xl hover:bg-white/10 hover:border-white/20 transition-all shadow-lg hover:shadow-white/5 active:scale-95 group">
                 Daha Fazla Göster
+                <span class="inline-block transition-transform group-hover:translate-y-0.5 ml-2">↓</span>
             </button>
         </div>
     </main>
@@ -394,7 +304,7 @@
                     T</div>
                 <span class="font-bold text-lg text-[#D4D4D4]">teammate</span>
             </div>
-            <p class="text-gray-400 text-sm">© 2024 Teammate. Tüm hakları saklıdır. (v1.3 Dark Mode)</p>
+            <p class="text-gray-400 text-sm">© 2024 Teammate. Tüm hakları saklıdır. (v1.3 Home)</p>
             <div class="flex gap-6 text-slate-400">
                 <a href="#" class="hover:text-[#D4D4D4] transition-colors"><svg class="w-5 h-5" fill="currentColor"
                         viewBox="0 0 24 24">
@@ -410,8 +320,68 @@
         </div>
     </footer>
 
-    <script src="js/auth.js?v=2"></script>
-    <script src="js/main.js?v=2"></script>
+    <!-- Message Modal -->
+    <div id="message-modal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closeMessageModal()"></div>
+
+        <!-- Modal Panel -->
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div
+                    class="relative transform overflow-hidden rounded-2xl bg-[#252525] border border-gray-700 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    <div class="px-6 py-6 border-b border-gray-700 flex justify-between items-center">
+                        <h3 class="text-lg font-bold leading-6 text-white" id="modal-title">Mesaj Gönder</h3>
+                        <button type="button" class="text-gray-400 hover:text-white transition-colors"
+                            onclick="closeMessageModal()">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="px-6 py-6 space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">Kime:</label>
+                            <div class="flex items-center gap-2 p-2 rounded-lg bg-[#202020] border border-gray-700">
+                                <span class="font-semibold text-white" id="modal-recipient-name">...</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">Konu:</label>
+                            <div class="p-2 rounded-lg bg-[#202020] border border-gray-700 text-gray-300 text-sm truncate"
+                                id="modal-listing-title">
+                                ...
+                            </div>
+                        </div>
+                        <div>
+                            <label for="message-content"
+                                class="block text-xs font-medium text-gray-400 mb-1">Mesajınız:</label>
+                            <textarea id="message-content" rows="4"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-700 focus:ring-2 focus:ring-white/20 focus:border-white transition-colors bg-[#202020] text-[#D4D4D4] placeholder-gray-500"
+                                placeholder="Merhaba, ilanını gördüm ve..."></textarea>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 bg-[#202020] border-t border-gray-700 flex flex-row-reverse gap-3">
+                        <button type="button" id="btn-send-message"
+                            class="inline-flex w-full justify-center rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-black shadow-lg shadow-white/10 hover:bg-gray-200 transition-all sm:w-auto">
+                            Gönder
+                        </button>
+                        <button type="button"
+                            class="inline-flex w-full justify-center rounded-xl bg-transparent px-5 py-2.5 text-sm font-medium text-gray-400 hover:text-white transition-colors sm:w-auto"
+                            onclick="closeMessageModal()">
+                            İptal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js?v=10"></script>
+    <script src="js/header.js?v=10"></script>
+    <script src="js/main.js?v=10"></script>
 </body>
 
 </html>

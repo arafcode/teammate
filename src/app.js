@@ -46,6 +46,13 @@ app.get('/api/health', (req, res) => {
 });
 
 // Sunucuyu Başlat
-app.listen(PORT, () => {
-    console.log(`Sunucu ${PORT} portunda çalışıyor: http://localhost:${PORT}`);
+const ensureDatabase = require('./scripts/ensure-db');
+
+ensureDatabase().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Sunucu ${PORT} portunda çalışıyor: http://localhost:${PORT}`);
+    });
+}).catch(err => {
+    console.error('Failed to ensure database:', err);
+    process.exit(1);
 });

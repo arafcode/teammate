@@ -16,6 +16,19 @@ async function ensureDatabase() {
             .map(query => query.trim())
             .filter(query => query.length > 0);
 
+        // Check if categories table needs fix (missing display_name)
+        try {
+            const [cols] = await db.execute("SHOW COLUMNS FROM categories LIKE 'display_name'");
+            if (cols.length === 0) {
+                console.log('Fixing categories table schema...');
+                await db.execute('SET FOREIGN_KEY_CHECKS = 0');
+                await db.execute('DROP TABLE IF EXISTS categories');
+                await db.execute('SET FOREIGN_KEY_CHECKS = 1');
+            }
+        } catch (e) {
+            // Table might not exist, ignore
+        }
+
         for (const query of queries) {
             try {
                 // Skip drop statements if any exist in schema (there shouldn't be, but just in case)

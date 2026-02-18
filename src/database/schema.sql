@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
-    slug VARCHAR(50) NOT NULL UNIQUE
+    display_name VARCHAR(50) NOT NULL UNIQUE
 );
 
 -- Kategorileri Başlat (Eğer yoksa ekle)
